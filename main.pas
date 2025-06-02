@@ -493,7 +493,5 @@ begin
   Player.Invalidate;
 end;
 
-// Спрятать игровое поле
-
 end.
 
