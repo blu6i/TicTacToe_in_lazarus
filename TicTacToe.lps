@@ -10,7 +10,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="10" Y="13"/>
-        <UsageCount Value="55"/>
+        <UsageCount Value="62"/>
       </Unit>
       <Unit>
         <Filename Value="main.pas"/>
@@ -19,9 +19,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <CursorPos Y="488"/>
-        <FoldState Value=" T4602 T3iK0m2 pj3kH0g3]97]9i8 PiUk30B"/>
-        <UsageCount Value="55"/>
+        <TopLine Value="359"/>
+        <CursorPos X="17" Y="371"/>
+        <FoldState Value=" T7EBf T3iM0i21215 pmKqX094 PSd0P"/>
+        <UsageCount Value="62"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -32,7 +33,7 @@
         <EditorIndex Value="1"/>
         <TopLine Value="4"/>
         <CursorPos X="22" Y="14"/>
-        <UsageCount Value="52"/>
+        <UsageCount Value="59"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -40,9 +41,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="GameBoard"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="9"/>
         <CursorPos Y="14"/>
-        <UsageCount Value="52"/>
+        <UsageCount Value="59"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -50,10 +50,9 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="GameLogic"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="119"/>
-        <CursorPos Y="19"/>
-        <FoldState Value=" T3iO04S"/>
-        <UsageCount Value="52"/>
+        <TopLine Value="128"/>
+        <CursorPos X="34" Y="211"/>
+        <UsageCount Value="59"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -61,50 +60,10 @@
         <UnitName Value="GameBoard"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="15"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="19"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="287" Column="20" TopLine="276"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="288" Column="20" TopLine="277"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="290" Column="20" TopLine="279"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="48" Column="31" TopLine="28"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="323" Column="19" TopLine="306"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="318" Column="3" TopLine="152"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="317" Column="3" TopLine="151"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="316" Column="3" TopLine="150"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="315" Column="3" TopLine="149"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="314" Column="3" TopLine="148"/>
-      </Position>
       <Position>
         <Filename Value="main.pas"/>
         <Caret Line="315" Column="3" TopLine="148"/>
@@ -184,6 +143,46 @@
       <Position>
         <Filename Value="main.pas"/>
         <Caret Line="231" TopLine="160"/>
+      </Position>
+      <Position>
+        <Filename Value="main.pas"/>
+        <Caret Line="447" Column="3" TopLine="356"/>
+      </Position>
+      <Position>
+        <Filename Value="gamelogic.pas"/>
+        <Caret Line="98" Column="9" TopLine="10"/>
+      </Position>
+      <Position>
+        <Filename Value="gamelogic.pas"/>
+        <Caret Line="69" Column="9" TopLine="11"/>
+      </Position>
+      <Position>
+        <Filename Value="gamelogic.pas"/>
+        <Caret Line="96" Column="5" TopLine="73"/>
+      </Position>
+      <Position>
+        <Filename Value="gamelogic.pas"/>
+        <Caret Line="8" Column="21"/>
+      </Position>
+      <Position>
+        <Filename Value="gamelogic.pas"/>
+        <Caret Line="113" Column="32" TopLine="90"/>
+      </Position>
+      <Position>
+        <Filename Value="gamelogic.pas"/>
+        <Caret Line="116" Column="43" TopLine="94"/>
+      </Position>
+      <Position>
+        <Filename Value="main.pas"/>
+        <Caret Line="477" TopLine="17"/>
+      </Position>
+      <Position>
+        <Filename Value="main.pas"/>
+        <Caret Line="431" Column="11" TopLine="420"/>
+      </Position>
+      <Position>
+        <Filename Value="main.pas"/>
+        <Caret Line="371" Column="23" TopLine="354"/>
       </Position>
     </JumpHistory>
     <RunParams>

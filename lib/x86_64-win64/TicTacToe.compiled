@@ -2,5 +2,4 @@
 <CONFIG>
   <Compiler Value="D:\Program\lazarus\fpc\3.2.2\bin\x86_64-win64\fpc.exe" Date="1513316847"/>
   <Params Value=" -MObjFPC -Scghi -O1 -gw3 -gl -WG -l -vewnhibq -FiC:\Users\Home\Desktop\Univer_2Sem\prog\TicTacToe\lib\x86_64-win64 -FuD:\Program\lazarus\lcl\units\x86_64-win64\win32 -FuD:\Program\lazarus\lcl\units\x86_64-win64 -FuD:\Program\lazarus\components\freetype\lib\x86_64-win64 -FuD:\Program\lazarus\components\lazutils\lib\x86_64-win64 -FuD:\Program\lazarus\packager\units\x86_64-win64 -FuC:\Users\Home\Desktop\Univer_2Sem\prog\TicTacToe\ -FUC:\Users\Home\Desktop\Univer_2Sem\prog\TicTacToe\lib\x86_64-win64\ -FEC:\Users\Home\Desktop\Univer_2Sem\prog\TicTacToe\ -oC:\Users\Home\Desktop\Univer_2Sem\prog\TicTacToe\TicTacToe.exe -dLCL -dLCLwin32 TicTacToe.lpr"/>
-  <Complete Value="False"/>
 </CONFIG>

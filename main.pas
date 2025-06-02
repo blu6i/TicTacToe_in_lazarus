@@ -18,6 +18,7 @@ type
     btnToMainMenu: TButton;
     btnReplay: TButton;
     btnToMenu: TButton;
+    btnClose: TButton;
     labelWinner: TLabel;
     btnMenu: TButton;
     labelGoes: TLabel;
@@ -41,7 +42,7 @@ type
     procedure btnMenuClick(Sender: TObject);
     procedure btnRightClick(Sender: TObject);
     procedure btnTopClick(Sender: TObject);
-    procedure InitGame(Mode: TGameMode);
+    procedure InitGame;
     procedure PaintBox1MouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure PaintBox1Paint(Sender: TObject);
@@ -51,6 +52,7 @@ type
     procedure btnResumeClick(Sender: TObject);
     procedure ShowMainMenu;
     procedure ShowWinningPanel(const WinnerName: string);
+    procedure btnClosePanelClick(Sender: TObject);
   end;
 
 var
@@ -77,32 +79,28 @@ begin
   Form1.Left := (Screen.Width - Form1.Width) div 2;
   Form1.Top := 0;
   // Привязка к PaintBox1
-  with btnLeft do
-  begin
+  with btnLeft do begin
     AnchorSideRight.Control := PaintBox1;
     AnchorSideRight.Side := asrLeft;
     Anchors := [akRight, akTop];
     Top := PaintBox1.Top + (PaintBox1.Height - Height) div 2;
   end;
 
-  with btnRight do
-  begin
+  with btnRight do begin
     AnchorSideLeft.Control := PaintBox1;
     AnchorSideLeft.Side := asrRight;
     Anchors := [akLeft, akTop];
     Top := PaintBox1.Top + (PaintBox1.Height - Height) div 2;
   end;
 
-  with btnTop do
-  begin
+  with btnTop do begin
     AnchorSideBottom.Control := PaintBox1;
     AnchorSideBottom.Side := asrTop;
     Anchors := [akTop, akLeft];
     Left := PaintBox1.Left + (PaintBox1.Width - Width) div 2;
   end;
 
-  with btnBottom do
-  begin
+  with btnBottom do begin
     AnchorSideTop.Control := PaintBox1;
     AnchorSideTop.Side := asrBottom;
     Anchors := [akTop, akLeft];
@@ -112,14 +110,14 @@ begin
 end;
 
 // Инициализация игры
-procedure TForm1.InitGame(Mode: TGameMode);
+procedure TForm1.InitGame;
 begin
   GameStarted := True;
   TurnNumber := 0;
   CurrentPlayer := cpCross;
   BoardSize := 3;
 
-  case Mode of
+  case GameMode of
     gmExpand: begin
       EnableCapture := False;
       GameType.Caption := 'Классический режим';
@@ -164,24 +162,21 @@ var
   FieldWidth, FieldHeight: Integer;
   ShiftX, ShiftY: Integer;
 begin
-  //if not GameStarted then Exit;
-
   CellSize := Min(PaintBox1.Width div BoardSize, PaintBox1.Height div BoardSize);
   FieldWidth := CellSize * BoardSize;
   FieldHeight := CellSize * BoardSize;
 
-  // Смещение — чтобы центрировать поле в PaintBox
+  // центрировать поле в PaintBox
   ShiftX := (PaintBox1.Width - FieldWidth) div 2;
   ShiftY := (PaintBox1.Height - FieldHeight) div 2;
 
-  with PaintBox1.Canvas do
-  begin
+  // Отрисовка поля
+  with PaintBox1.Canvas do begin
     Brush.Color := clWhite;
     FillRect(Rect(0, 0, PaintBox1.Width, PaintBox1.Height));
 
     for i := 0 to BoardSize - 1 do
-      for j := 0 to BoardSize - 1 do
-      begin
+      for j := 0 to BoardSize - 1 do begin
         Pen.Color := clBlack;
         Pen.Width := 1;
         x := ShiftX + j * CellSize;
@@ -210,7 +205,7 @@ end;
 procedure TForm1.PaintBox1MouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 var
-  Row, Col, CellSize: Integer;
+  Row, Col, CellSize, PlayerID: Integer;
 begin
   if not GameStarted then Exit;
 
@@ -224,16 +219,40 @@ begin
   begin
     // Устанавливаем фигуру
     if CurrentPlayer = cpCross then
-      Board[Row][Col] := 1
+      PlayerID := 1
     else
-      Board[Row][Col] := 2;
+      PlayerID := 2;
+    Board[Row][Col] := PlayerID;
     PaintBox1.Invalidate;
-    // Проверка победы
-    if CheckWin(Row, Col, Board[Row][Col]) then
-    begin
-      ShowWinningPanel(IfThen(Board[Row][Col] = 1, 'Крестик', 'Нолик'));
-      GameStarted := False;
-      Exit;
+    case GameMode of
+      gmExpand: begin
+        // Проверка победы
+        if CheckWin(Row, Col, Board[Row][Col]) then begin
+          ShowWinningPanel(IfThen(Board[Row][Col] = 1, 'Крестик', 'Нолик'));
+          Exit;
+        end;
+      end;
+      gmConquest: begin
+        CheckAndCaptureStrict(PlayerID);
+        case CheckEndCapture of
+          1: begin
+            ShowWinningPanel('Крестик');
+            Exit;
+          end;
+          2: begin
+            ShowWinningPanel('Нолик');
+            Exit;
+          end;
+          3: begin
+            ShowWinningPanel('Никто не');
+            Exit;
+          end;
+        end;
+      end;
+      gmHybrid: begin
+        EnableCapture := True;
+        GameType.Caption := 'Гибридный режим';
+      end;
     end;
 
     // Переключение игрока
@@ -242,11 +261,10 @@ begin
 
     // Проверка на расширение
     Inc(TurnNumber);
-    if TurnNumber >= NextExpandTurn then
-    begin
+    if TurnNumber >= NextExpandTurn then begin
       ExpandBoard;
       UpdateNextExpandTurn;
-      WinLength := WinLength + 2;
+      WinLength := WinLength + 1;
     end;
   end;
 end;
@@ -268,16 +286,14 @@ begin
     Pen.Width := 3;
     Brush.Style := bsClear;
 
-    if CurrentPlayer = cpCross then
-    begin
+    if CurrentPlayer = cpCross then begin
       Pen.Color := clRed;
       MoveTo(X1, Y1);
       LineTo(X2, Y2);
       MoveTo(X2, Y1);
       LineTo(X1, Y2);
     end
-    else
-    begin
+    else begin
       Pen.Color := clBlue;
       Ellipse(X1, Y1, X2, Y2);
     end;
@@ -339,13 +355,20 @@ begin
   btnToMenu.Height := ButtonHeight;
   btnReplay.Height := ButtonHeight;
 
-  // Расположение кнопок под надписью, по центру, с отступом
+  // Кнопка закрытия
+  btnClose.Width := 30;
+  btnClose.Height := 30;
+  btnClose.Top := 5;
+  btnClose.Left := PanelWinning.Width - btnClose.Width - 5;
+
+  // Транспорт кнопок
   btnReplay.Left := (PanelWinning.Width - btnReplay.Width) div 2;
   btnReplay.Top := labelWinner.Top + labelWinner.Height + 30;
 
   btnToMenu.Left := (PanelWinning.Width - btnToMenu.Width) div 2;
   btnToMenu.Top := btnReplay.Top + btnReplay.Height + 20;
   btnMenu.Visible := False;
+  GameStarted := False;
   // Отобразить панель
   PanelWinning.Visible := True;
   OverlayPanel.Visible := True;
@@ -402,8 +425,7 @@ end;
 // Нажатие старта
 procedure TForm1.btnStartClick(Sender: TObject);
 begin
-  if ComboBoxGameMode.ItemIndex = -1 then
-  begin
+  if ComboBoxGameMode.ItemIndex = -1 then begin
     ShowMessage('Пожалуйста, выберите режим игры.');
     Exit;
   end;
@@ -415,7 +437,7 @@ begin
   end;
   OverlayPanel.Visible := False;
   GameType.Visible := True;
-  InitGame(GameMode);
+  InitGame;
 end;
 
 // Продолжить игру
@@ -433,7 +455,7 @@ var
   BtnParent: TWinControl;
 begin
   BtnParent := (Sender as TButton).Parent;
-  InitGame(GameMode);
+  InitGame;
   btnMenu.Visible := True;
   OverlayPanel.Visible := False;
   BtnParent.Visible := False;
@@ -460,9 +482,22 @@ begin
   PanelMainMenu.Visible := True;
 end;
 
+// Закрытие окна
+procedure TForm1.btnClosePanelClick(Sender: TObject);
+var
+  BtnParent: TWinControl;
+begin
+  BtnParent := (Sender as TButton).Parent;
+  BtnParent.Visible := False;
+  if BtnParent = PanelWinning then begin
+    btnMenu.Visible := True;
+  end;
+end;
+
 // Смещение поля
 procedure TForm1.btnLeftClick(Sender: TObject);
 begin
+  if not GameStarted then Exit;
   ShiftLeft;
   PaintBox1.Invalidate;
   SwitchPlayer;
@@ -471,6 +506,7 @@ end;
 
 procedure TForm1.btnRightClick(Sender: TObject);
 begin
+  if not GameStarted then Exit;
   ShiftRight;
   PaintBox1.Invalidate;
   SwitchPlayer;
@@ -479,6 +515,7 @@ end;
 
 procedure TForm1.btnTopClick(Sender: TObject);
 begin
+  if not GameStarted then Exit;
   ShiftUp;
   PaintBox1.Invalidate;
   SwitchPlayer;
@@ -487,6 +524,7 @@ end;
 
 procedure TForm1.btnBottomClick(Sender: TObject);
 begin
+  if not GameStarted then Exit;
   ShiftDown;
   PaintBox1.Invalidate;
   SwitchPlayer;
